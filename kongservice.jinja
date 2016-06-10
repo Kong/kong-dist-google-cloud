@@ -1,0 +1,70 @@
+{% set CLUSTER_TYPE = env['project'] + '/' + properties['clusterType'] %}
+
+{% set COLLECTION_PREFIX = '/api/v1/namespaces/{namespace}/' %}
+{% set RC_COLLECTION = COLLECTION_PREFIX + 'replicationcontrollers' %}
+{% set SERVICE_COLLECTION = COLLECTION_PREFIX + 'services' %}
+
+{% set NAME_PREFIX = env['name'] %}
+
+{% set PROXY_PORT = properties['proxy_port'] %}
+{% set ADMIN_PORT = properties['admin_port'] %}
+{% set DATABASE = properties['database'] %}
+
+resources:
+- name: {{ NAME_PREFIX }}
+  type: {{ CLUSTER_TYPE }}:{{ SERVICE_COLLECTION }}
+  properties:
+    apiVersion: v1
+    kind: Service
+    namespace: default
+    metadata:
+      name: {{ NAME_PREFIX }}
+    spec:
+      # Creates an external IP through network load-balancer.
+      type: LoadBalancer
+      ports:
+      - name: {{ NAME_PREFIX }}-admin
+        port: {{ ADMIN_PORT }}
+        targetPort: 8001
+        protocol: TCP
+      - name: {{ NAME_PREFIX }}-proxy
+        port: {{ PROXY_PORT }}
+        targetPort: 8000
+        protocol: TCP
+      selector:
+        name: {{ NAME_PREFIX }}
+
+- name: {{ NAME_PREFIX }}-rc
+  type: {{ CLUSTER_TYPE }}:{{ RC_COLLECTION }}
+  properties:
+    apiVersion: v1
+    kind: ReplicationController
+    namespace: default
+    metadata:
+      name: {{ NAME_PREFIX }}-rc
+    spec:
+      template:
+        metadata:
+          labels:
+            name: {{ NAME_PREFIX }}
+        spec:
+          containers:
+          - name: container
+            image: {{ properties['image'] }}
+            env:
+              - name: DATABASE
+                value: {{ DATABASE }}
+            ports:
+            - name: admin
+              containerPort: 8001
+              protocol: TCP
+            - name: proxy
+              containerPort: 8000
+              protocol: TCP
+            - name: surf-tcp
+              containerPort: 7946
+              protocol: TCP
+            - name: surf-udp
+              containerPort: 7946
+              protocol: UDP
+

@@ -1,0 +1,22 @@
+info:
+  description: Cassandra service in a Kubernetes cluster.
+
+required:
+- clusterType
+
+properties:
+  clusterType:
+    type: string
+    description: Type for cluster to deploy into.
+  image:
+    type: string
+    description: Docker image to run.
+  cql_port:
+    type: integer
+    description: Port on which cql runs.
+    default: 9042
+  thirft_port:
+    type: integer
+    description: Port on which Cassandra gossips with other Cassandra nodes.
+    default: 9160
+

@@ -1,0 +1,29 @@
+info:
+  description: Kong service in a Kubernetes cluster.
+
+required:
+- clusterType
+
+properties:
+  clusterType:
+    type: string
+    description: Type for cluster to deploy into.
+  image:
+    type: string
+    description: Docker image to run.
+  proxy_port:
+    type: integer
+    description: Port on which Kong Proxy runs.
+    default: 8000
+  admin_port:
+    type: integer
+    description: Port on which Kong Admin runs.
+    default: 8001
+  database:
+    type: string
+    description: Database to be used by Kong.
+    default: cassandra
+    enum:
+      - postgres
+      - cassandra
+    

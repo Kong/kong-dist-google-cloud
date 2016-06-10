@@ -1,0 +1,12 @@
+imports:
+- path: cluster.jinja
+
+resources:
+- name: kong-cluster
+  type: cluster.jinja
+  properties:
+    zone: us-east1-b
+    username: kong-cluster
+    password: changeIt
+    machineType: n1-standard-2
+    numNodes: 3

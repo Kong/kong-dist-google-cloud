@@ -1,0 +1,35 @@
+{% set CLUSTER_NAME = env['name'] %}
+{% set TYPE_NAME = CLUSTER_NAME + '-type' %}
+
+resources:
+- name: {{ CLUSTER_NAME }}
+  type: container.v1.cluster
+  properties:
+    zone: {{ properties['zone'] }}
+    cluster:
+      name: {{ CLUSTER_NAME }}
+      initialNodeCount: {{ properties['numNodes'] }}
+      nodeConfig:
+        machine_type: {{ properties['machineType'] }}
+        oauthScopes:
+        - https://www.googleapis.com/auth/compute
+        - https://www.googleapis.com/auth/devstorage.read_only
+        - https://www.googleapis.com/auth/logging.write
+        - https://www.googleapis.com/auth/monitoring
+      masterAuth:
+        username: {{ properties['username'] }}
+        password: {{ properties['password'] }}
+
+- name: {{ TYPE_NAME }}
+  type: deploymentmanager.alpha.type
+  properties:
+    configurableService:
+      descriptorUrl: https://$(ref.{{ CLUSTER_NAME }}.endpoint)/swaggerapi/api/v1
+      credential:
+        basicAuth:
+          user: $(ref.{{ CLUSTER_NAME }}.masterAuth.username)
+          password: $(ref.{{ CLUSTER_NAME }}.masterAuth.password)
+
+outputs:
+- name: clusterType
+  value: {{ TYPE_NAME }}

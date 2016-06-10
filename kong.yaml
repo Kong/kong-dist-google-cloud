@@ -1,0 +1,11 @@
+imports:
+- path: kongservice.jinja
+
+resources:
+- name: kong-service
+  type: kongservice.jinja
+  properties:
+    clusterType: kong-cluster-type
+    image: mashape/kong
+    database: cassandra
+
