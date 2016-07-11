@@ -8,4 +8,6 @@ resources:
     clusterType: kong-cluster-type
     image: mashape/kong
     database: cassandra
+    proxy_cidr: 0.0.0.0/0
+    admin_cidr: 0.0.0.0/0
 

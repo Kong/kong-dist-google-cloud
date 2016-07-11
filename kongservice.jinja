@@ -9,30 +9,51 @@
 {% set PROXY_PORT = properties['proxy_port'] %}
 {% set ADMIN_PORT = properties['admin_port'] %}
 {% set DATABASE = properties['database'] %}
+{% set ADMIN_CIDR = properties['admin_cidr'] %}
+{% set PROXY_CIDR = properties['proxy_cidr'] %}
 
 resources:
-- name: {{ NAME_PREFIX }}
+- name: {{ NAME_PREFIX }}-proxy
   type: {{ CLUSTER_TYPE }}:{{ SERVICE_COLLECTION }}
   properties:
     apiVersion: v1
     kind: Service
     namespace: default
     metadata:
-      name: {{ NAME_PREFIX }}
+      name: {{ NAME_PREFIX }}-proxy
     spec:
       # Creates an external IP through network load-balancer.
       type: LoadBalancer
+      loadBalancerSourceRanges:
+      - {{ PROXY_CIDR }}
       ports:
-      - name: {{ NAME_PREFIX }}-admin
-        port: {{ ADMIN_PORT }}
-        targetPort: 8001
-        protocol: TCP
       - name: {{ NAME_PREFIX }}-proxy
         port: {{ PROXY_PORT }}
         targetPort: 8000
         protocol: TCP
       selector:
-        name: {{ NAME_PREFIX }}
+        name: {{ NAME_PREFIX }}-proxy
+
+- name: {{ NAME_PREFIX }}-admin
+  type: {{ CLUSTER_TYPE }}:{{ SERVICE_COLLECTION }}
+  properties:
+    apiVersion: v1
+    kind: Service
+    namespace: default
+    metadata:
+      name: {{ NAME_PREFIX }}-admin
+    spec:
+      # Creates an external IP through network load-balancer.
+      type: LoadBalancer
+      loadBalancerSourceRanges:
+      - {{ ADMIN_CIDR }}
+      ports:
+      - name: {{ NAME_PREFIX }}-admin
+        port: {{ ADMIN_PORT }}
+        targetPort: 8001
+        protocol: TCP
+      selector:
+        name: {{ NAME_PREFIX }}-admin
 
 - name: {{ NAME_PREFIX }}-rc
   type: {{ CLUSTER_TYPE }}:{{ RC_COLLECTION }}
@@ -46,7 +67,7 @@ resources:
       template:
         metadata:
           labels:
-            name: {{ NAME_PREFIX }}
+            name: {{ NAME_PREFIX }}-rc
         spec:
           containers:
           - name: container

@@ -19,6 +19,14 @@ properties:
     type: integer
     description: Port on which Kong Admin runs.
     default: 8001
+  admin_cidr:
+    type: string
+    description: The IP address range that can be used to access the Kong Admin port 8001.
+    default: 0.0.0.0/0
+  proxy_cidr:
+    type: string
+    description: The IP address range that can be used to access the Kong Proxy port 8000.
+    default: 0.0.0.0/0
   database:
     type: string
     description: Database to be used by Kong.

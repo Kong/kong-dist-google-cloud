@@ -59,6 +59,7 @@ Kong can easily be povisioned to Google Cloud using the following steps:
       * the cluster type created for the GKE cluster deployed previously
       * the Kong image (*for different version*)
       * the Admin and Proxy port for Kong containers
+      * the Admin and Proxy allowed CIDR for Kong
 
     When ready, deploy with the following command:
 
@@ -81,10 +82,11 @@ Kong can easily be povisioned to Google Cloud using the following steps:
     $ kubectl get pods
     $ kubectl get services
     ```
-    Once the `EXTERNAL_IP` is available for Kong service, you can test Kong:
+    Once the `EXTERNAL_IP` is available for Kong Proxy and Admin services, you can test Kong:
 
     ```bash
-    $ curl <ip-address>:8001
+    $ curl <admin-ip-address>:8001
+    $ curl <proxy-ip-address>:8000
     ```
 
 3. **Using Kong:**
