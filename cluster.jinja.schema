@@ -15,6 +15,7 @@ properties:
   zone:
     type: string
     description: Zone in which the cluster should run.
+    default: us-east1-b
   machineType:
     type: string
     description: Type of GCE instance to use.

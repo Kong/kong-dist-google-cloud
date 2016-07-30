@@ -2,11 +2,11 @@ imports:
 - path: cluster.jinja
 
 resources:
-- name: kong-cluster
+- name: kongclusternew
   type: cluster.jinja
   properties:
     zone: us-east1-b
-    username: kong-cluster
-    password: changeIt
+    username: admin
+    password: password12345
     machineType: n1-standard-2
-    numNodes: 3
+    numNodes: 2

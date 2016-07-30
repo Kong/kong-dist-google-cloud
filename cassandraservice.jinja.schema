@@ -19,4 +19,3 @@ properties:
     type: integer
     description: Port on which Cassandra gossips with other Cassandra nodes.
     default: 9160
-

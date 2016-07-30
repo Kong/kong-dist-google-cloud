@@ -5,5 +5,5 @@ resources:
 - name: kong-database
   type: cassandraservice.jinja
   properties:
-    clusterType: kong-cluster-type
-    image: gcr.io/google-samples/cassandra:v8
+    clusterType: kongclusternew-type
+    image: gcr.io/google-samples/cassandra:v9

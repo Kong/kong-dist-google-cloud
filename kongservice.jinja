@@ -7,6 +7,7 @@
 {% set NAME_PREFIX = env['name'] %}
 
 {% set PROXY_PORT = properties['proxy_port'] %}
+{% set SSL_PROXY_PORT = properties['ssl_proxy_port'] %}
 {% set ADMIN_PORT = properties['admin_port'] %}
 {% set DATABASE = properties['database'] %}
 {% set ADMIN_CIDR = properties['admin_cidr'] %}
@@ -31,8 +32,12 @@ resources:
         port: {{ PROXY_PORT }}
         targetPort: 8000
         protocol: TCP
+      - name: {{ NAME_PREFIX }}-proxy-ssl
+        port: {{ SSL_PROXY_PORT }}
+        targetPort: 8443
+        protocol: TCP
       selector:
-        name: {{ NAME_PREFIX }}-proxy
+        app: {{ NAME_PREFIX }}
 
 - name: {{ NAME_PREFIX }}-admin
   type: {{ CLUSTER_TYPE }}:{{ SERVICE_COLLECTION }}
@@ -53,7 +58,7 @@ resources:
         targetPort: 8001
         protocol: TCP
       selector:
-        name: {{ NAME_PREFIX }}-admin
+        app: {{ NAME_PREFIX }}
 
 - name: {{ NAME_PREFIX }}-rc
   type: {{ CLUSTER_TYPE }}:{{ RC_COLLECTION }}
@@ -63,11 +68,13 @@ resources:
     namespace: default
     metadata:
       name: {{ NAME_PREFIX }}-rc
+      app: {{ NAME_PREFIX }}
     spec:
       template:
         metadata:
           labels:
             name: {{ NAME_PREFIX }}-rc
+            app: {{ NAME_PREFIX }}
         spec:
           containers:
           - name: container
@@ -81,6 +88,9 @@ resources:
               protocol: TCP
             - name: proxy
               containerPort: 8000
+              protocol: TCP
+            - name: proxy-ssl
+              containerPort: 8443
               protocol: TCP
             - name: surf-tcp
               containerPort: 7946

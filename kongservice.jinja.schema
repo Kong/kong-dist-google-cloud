@@ -19,6 +19,10 @@ properties:
     type: integer
     description: Port on which Kong Admin runs.
     default: 8001
+  ssl_proxy_port:
+    type: integer
+    description: Port on which secure Kong proxy runs.
+    default: 8443
   admin_cidr:
     type: string
     description: The IP address range that can be used to access the Kong Admin port 8001.
@@ -34,4 +38,4 @@ properties:
     enum:
       - postgres
       - cassandra
-    
+

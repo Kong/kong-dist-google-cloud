@@ -5,7 +5,7 @@ resources:
 - name: kong-service
   type: kongservice.jinja
   properties:
-    clusterType: kong-cluster-type
+    clusterType: kongclusternew-type
     image: mashape/kong
     database: cassandra
     proxy_cidr: 0.0.0.0/0
