@@ -9,6 +9,8 @@
 
 {% set CQL_PORT = properties['cql_port'] %}
 {% set THIRFT_PORT = properties['thirft_port'] %}
+{% set HEAP_NEW_SIZE = properties['heap_new_size'] %}
+{% set HEAP_MAX_SIZE = properties['heap_max_size'] %}
 
 resources:
 
@@ -54,9 +56,9 @@ resources:
                 - name: CASSANDRA_SERVICE
                   value: {{ NAME_PREFIX }}
                 - name: MAX_HEAP_SIZE
-                  value: 512M
+                  value: {{ HEAP_MAX_SIZE }}M
                 - name: HEAP_NEWSIZE
-                  value: 100M
+                  value:  {{ HEAP_NEW_SIZE }}M
                 - name: POD_NAMESPACE
                   valueFrom:
                     fieldRef:

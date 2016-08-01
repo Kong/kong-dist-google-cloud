@@ -11,7 +11,7 @@ Kong can easily be povisioned to Google Cloud using the following steps:
 
 1. **Initial setup**:
 
-    You would need [gcloud](https://cloud.google.com/sdk/) and [kubectl](https://cloud.google.com/container-engine/docs/quickstart#install_the_gcloud_command-line_interface) command-line tools installed and set up to run deployment commands.
+    You would need [gcloud](https://cloud.google.com/sdk/) and [kubectl](https://cloud.google.com/container-engine/docs/quickstart#install_the_gcloud_command-line_interface) command-line tools installed and set up to run deployment commands. Also make sure your Google Cloud account has at least two STATIC_ADDRESSES available. 
 
     Download or clone the repo
 

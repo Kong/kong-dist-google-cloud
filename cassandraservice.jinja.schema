@@ -13,9 +13,13 @@ properties:
     description: Docker image to run.
   cql_port:
     type: integer
-    description: Port on which cql runs.
+    description: CQL native transport port.
     default: 9042
-  thirft_port:
+  heap_max_size:
     type: integer
-    description: Port on which Cassandra gossips with other Cassandra nodes.
-    default: 9160
+    description: The maximum heap size for the JVM.
+    default: 512
+  heap_new_size:
+    type: integer
+    description: The size of the young generation. A higher value causes longer GC pause times; a lower value usually makes GC more expensive.
+    default: 100
