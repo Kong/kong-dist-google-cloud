@@ -2,7 +2,7 @@ imports:
 - path: cluster.jinja
 
 resources:
-- name: kongclusternew
+- name: kong-cluster
   type: cluster.jinja
   properties:
     zone: us-east1-b

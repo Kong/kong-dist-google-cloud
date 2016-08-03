@@ -5,9 +5,11 @@ resources:
 - name: kong-service
   type: kongservice.jinja
   properties:
-    clusterType: kongclusternew-type
+    clusterType: kong-cluster-type
     image: mashape/kong
-    database: cassandra
+    admin_port: 8001
+    proxy_port: 8000
+    ssl_proxy_port: 8443
     proxy_cidr: 0.0.0.0/0
     admin_cidr: 0.0.0.0/0
 

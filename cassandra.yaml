@@ -5,5 +5,8 @@ resources:
 - name: kong-database
   type: cassandraservice.jinja
   properties:
-    clusterType: kongclusternew-type
+    clusterType: kong-cluster-type
     image: gcr.io/google-samples/cassandra:v9
+    cql_port: 9042
+    heap_max_size: 512
+    heap_new_size: 100
