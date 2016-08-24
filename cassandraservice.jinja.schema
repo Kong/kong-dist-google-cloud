@@ -13,7 +13,7 @@ properties:
     description: Docker image to run.
   cql_port:
     type: integer
-    description: CQL native transport port.
+    description: The Database port to connect to.
     default: 9042
   heap_max_size:
     type: integer

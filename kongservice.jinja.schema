@@ -34,8 +34,55 @@ properties:
   database:
     type: string
     description: Database to be used by Kong.
-    default: cassandra
+    default: postgres
     enum:
       - postgres
       - cassandra
+  pg_host:
+    type: string
+    description: The PostgreSQL host to connect to.
+    default: kong-database
+  pg_port:
+    type: integer
+    description: The port to connect to.
+    default: 5432
+  pg_user:
+    type: string
+    description: The username to authenticate.
+    default: kong
+  pg_password:
+    type: string
+    description: The password to authenticate.
+    default: kong
+  pg_database:
+    type: string
+    description: The database name to connect to.
+    default: kong
+  cassandra_contact_points:
+    type: string
+    description: A comma-separated list of Cassandra contact points .
+    default: kong-database
+  cassandra_port:
+    type: integer
+    description: The port on which Cassandra nodes are listening for query.
+    default: 9042
+  cassandra_consistency:
+    type: string
+    description: Consistency setting to use when reading writing to the Cassandra cluster.
+    default: ONE
+  cassandra_keyspace:
+    type: string
+    description: The keyspace to use in your cluster.
+    default: kong
+  dns_resolver:
+    type: string
+    description: A name server to be used by Nginx.
+    default: 8.8.8.8
+  log_level:
+    type: string
+    description: Log level of the Nginx server.
+    default: debug
+    
+    
+    
 

@@ -36,6 +36,9 @@ Kong can easily be povisioned to Google Cloud using the following steps:
 
 3. **Deploy a Kong supported Database**
 
+    
+    ## Cassandra
+
     Using `cassandra.yaml` deploy a Cassandra `Service` and a `ReplicationController` to the GKE cluster created in the last step.
     Update following properties if needed.
 
@@ -48,9 +51,22 @@ Kong can easily be povisioned to Google Cloud using the following steps:
     ```bash
     $ gcloud deployment-manager deployments create cassandra --config cassandra.yaml
     ```
-<div class="alert alert-warning">
-  <strong>Note:</strong> Currently only Cassandra supported.
-</div>
+    
+   ## Postgres
+   
+    Using `postgres.yaml` deploy a Postges `Service` and a `ReplicationController` to the GKE cluster created in the last step.
+    Update following properties if needed.
+
+      * the cluster type created for the GKE cluster deployed previously
+      * the Postgres image
+      * the port on which Postgres listen to 
+
+    When ready, deploy with the following command:
+
+    ```bash
+    $ gcloud deployment-manager deployments create pgdb --config postgres.yaml
+    ```
+   
 
 4. **Deploying Kong on the cluster**
 

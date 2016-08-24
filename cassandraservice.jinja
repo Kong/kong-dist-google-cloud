@@ -41,6 +41,7 @@ resources:
       app: {{ NAME_PREFIX }}
       name: {{ NAME_PREFIX }}
     spec:
+      replicas: 2
       template:
         metadata:
           labels:
@@ -67,7 +68,7 @@ resources:
                   valueFrom:
                     fieldRef:
                       fieldPath: status.podIP
-              image: gcr.io/google-samples/cassandra:v8
+              image: {{ properties['image'] }}
               name: {{ NAME_PREFIX }}
               ports:
                 - containerPort: 7000

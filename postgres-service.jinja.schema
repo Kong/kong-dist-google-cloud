@@ -1,0 +1,29 @@
+info:
+  description: Cassandra service in a Kubernetes cluster.
+
+required:
+- clusterType
+
+properties:
+  clusterType:
+    type: string
+    description: Type for cluster to deploy into.
+  image:
+    type: string
+    description: Docker image to run.
+  pg_user:
+    type: string
+    description: The username to authenticate.
+    default: kong
+  pg_password:
+    type: string
+    description: The password to authenticate.
+    default: kong
+  pg_database:
+    type: string
+    description: The database name to connect to.
+    default: kong
+  pgql_port:
+    type: integer
+    description: The database port to connect to.
+    default: 5432

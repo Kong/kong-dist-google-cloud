@@ -1,0 +1,67 @@
+
+{% set CLUSTER_TYPE = env['project'] + '/' + properties['clusterType'] %}
+{% set COLLECTION_PREFIX = '/api/v1/namespaces/{namespace}/' %}
+{% set RC_COLLECTION = COLLECTION_PREFIX + 'replicationcontrollers' %}
+{% set SERVICE_COLLECTION = COLLECTION_PREFIX + 'services' %}
+{% set NAME_PREFIX = env['name'] %}
+{% set PGQL_PORT = properties['pgql_port'] %}
+
+resources:
+
+- name: {{ NAME_PREFIX }}
+  type: {{ CLUSTER_TYPE }}:{{ SERVICE_COLLECTION }}
+  properties:
+    apiVersion: v1
+    kind: Service
+    namespace: default
+    metadata:
+      name: {{ NAME_PREFIX }}
+    spec:
+      ports:
+      - name: pgql
+        port: {{ PGQL_PORT }}
+        targetPort: 5432
+        protocol: TCP
+      selector:
+        app: {{ NAME_PREFIX }}
+
+- name: {{ NAME_PREFIX }}-rc
+  type: {{ CLUSTER_TYPE }}:{{ RC_COLLECTION }}
+  properties:
+    apiVersion: v1
+    kind: ReplicationController
+    namespace: default
+    metadata:
+      app: {{ NAME_PREFIX }}
+      name: {{ NAME_PREFIX }}
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: {{ NAME_PREFIX }}
+        spec:
+          containers:
+            - name: {{ NAME_PREFIX }}
+              image: {{ properties['image'] }}
+              env:
+                - name: POSTGRES_USER
+                  value: {{ properties['pg_user'] }}
+                - name: POSTGRES_PASSWORD
+                  value: {{ properties['pg_password'] }}
+                - name: POSTGRES_DB
+                  value: {{ properties['pg_database'] }}
+                - name: PGDATA
+                  value: /var/lib/postgresql/data/pgdata
+              ports:
+                - containerPort: 5432
+              volumeMounts:
+                - mountPath: /var/lib/postgresql/data
+                  name: pg-data
+          volumes:
+            - name: pg-data
+              source:
+                gcePersistentDisk:
+                  # This GCE PD must already exist and be formatted ext4
+                  pdName: pg-data-disk
+                  fsType: ext4

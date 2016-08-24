@@ -80,8 +80,30 @@ resources:
           - name: container
             image: {{ properties['image'] }}
             env:
-              - name: DATABASE
-                value: {{ DATABASE }}
+              - name: KONG_DATABASE
+                value: {{ properties['database'] }}
+              - name: KONG_CASSANDRA_CONTACT_POINTS
+                value: {{ properties['cassandra_contact_points'] }}
+              - name: KONG_CASSANDRA_PORT
+                value: {{ properties['cassandra_port'] }}
+              - name: KONG_CASSANDRA_CONSISTENCY
+                value: {{ properties['cassandra_consistency'] }}
+              - name: KONG_PG_USER
+                value: {{ properties['pg_user'] }}
+              - name: KONG_PG_DATABASE
+                value: {{ properties['pg_database'] }}
+              - name: KONG_PG_PASSWORD
+                value: {{ properties['pg_password'] }}
+              - name: KONG_PG_HOST
+                value: {{ properties['pg_host'] }}  
+              - name: KONG_DNS_RESOLVER
+                value: {{ properties['dns_resolver'] }}
+              - name: KONG_DNSMASQ
+                value: "off"
+              - name: KONG_LOG_LEVEL
+                value: {{ properties['log_level'] }}
+              - name: KONG_CASSANDRA_KEYSPACE
+                value: {{ properties['cassandra_keyspace'] }}  
             ports:
             - name: admin
               containerPort: 8001

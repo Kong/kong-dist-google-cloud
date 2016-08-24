@@ -1,0 +1,10 @@
+imports:
+- path: postgres-service.jinja
+
+resources:
+- name: kong-database
+  type: postgres-service.jinja
+  properties:
+    clusterType: kong-cluster-type
+    image: postgres:9.4
+    cql_port: 5432
